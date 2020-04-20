@@ -2,11 +2,11 @@
 ## EXERCICIO 1
 
 **1. Adicione outro Peixe e um Hamster com nome Frodo**
->db.pets.insert({name: "Frodo", species: "Peixe"})
->db.pets.insert({name: "Frodo", species: "Hamster"})
+> db.pets.insert({name: "Frodo", species: "Peixe"})
+> db.pets.insert({name: "Frodo", species: "Hamster"})
 
 **2. Faça uma contagem dos pets na coleção**
->db.pets.count()
+> db.pets.count()
 `8`
 
 **3. Retorne apenas um elemento o método prático possível**
