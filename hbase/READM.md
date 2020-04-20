@@ -87,3 +87,45 @@ professional-data:salary        timestamp=1587241589051, value=10000
 
 **8. Incremente a idade do italiano em 1.**
 > incr 'italians', '5', 'personal-data:age' , 1
+
+## EXERCICIO 2
+Com base no script de italianos utilizado no exercício de MongoDB, altere ele para uma versão do HBase. Você pode transformar ele para Ruby ou gerar os comandos para HBase a partir do JavaScript mesmo. 
+Modifique para inserir os dados com a seguinte estrutura:
+**Família de coluna: personal-data**
+ firstname
+ surname
+ age
+ bloodType
+ city
+ father
+ mother
+ 
+ **Familia de colunas: app-data**
+ id_num,
+ email
+ registerDate
+ ticketNumber
+ username
+
+ **Familia de Colunas: professional-data**
+ jobs
+ salary
+
+ **Familia de Colunas: miscelaneous**
+ favFruits
+ movies
+ cat
+ dog
+ 
+ Utilizando o MapReduce, faça um relatório ou mais de um indicando as seguintes informações:
+**1. Quantidade de gatos e cachorros na amostra**
+
+**2. Média de gatos e cachorros na população**
+
+**3. Quantidade de pais e mães**
+
+**4. Média de pais e mães**
+
+**5. Média de frutas e filmes por italiano**
+
+**6. Salário médio dos italianos **
