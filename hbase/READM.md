@@ -89,34 +89,35 @@ professional-data:salary        timestamp=1587241589051, value=10000
 > incr 'italians', '5', 'personal-data:age' , 1
 
 ## EXERCICIO 2
-Com base no script de italianos utilizado no exercício de MongoDB, altere ele para uma versão do HBase. Você pode transformar ele para Ruby ou gerar os comandos para HBase a partir do JavaScript mesmo. 
+Com base no script de italianos utilizado no exercício de MongoDB, altere ele para uma versão do HBase. Você pode transformar ele para Ruby ou gerar os comandos para HBase a partir do JavaScript mesmo.
+
 Modifique para inserir os dados com a seguinte estrutura:
+
 **Família de coluna: personal-data**
- firstname
- surname
- age
- bloodType
- city
- father
- mother
+ <p>firstname</p>
+ <p>surname</p>
+ <p>age</p>
+ <p>bloodType</p>
+ <p>city</p>
+ <p>father</p>
+ <p>mother</p>
  
  **Familia de colunas: app-data**
- id_num
- email
- registerDate
- ticketNumber
- username
+ <p>id_num</p>
+ <p>email</p>
+ <p>registerDate</p>
+ <p>ticketNumber</p>
+ <p>username</p>
 
  **Familia de Colunas: professional-data**
- jobs
- salary
+ <p>jobs</p>
+ <p>salary</p>
 
  **Familia de Colunas: miscelaneous**
- 
- favFruits
- movies
- cat
- dog
+ <p>favFruits</p>
+ <p>movies</p>
+ <p>cat</p>
+ <p>dog</p>
  
  Utilizando o MapReduce, faça um relatório ou mais de um indicando as seguintes informações:
  
