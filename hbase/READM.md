@@ -119,7 +119,9 @@ Modifique para inserir os dados com a seguinte estrutura:
  <p>cat</p>
  <p>dog</p>
  
+ 
  Utilizando o MapReduce, faça um relatório ou mais de um indicando as seguintes informações:
+ 
  
 **1. Quantidade de gatos e cachorros na amostra**
 
