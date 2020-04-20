@@ -1,12 +1,12 @@
 ## EXERCICIO 1
 
-**1. Crie a tabela com 2 famílias de colunas:
+**1. Crie a tabela com 2 famílias de colunas:**
 a. personal-data
 b. professional-data
 
 > create 'italians', 'personal-data', 'professional-data'
 
-**2. Importe o arquivo via linha de comando
+**2. Importe o arquivo via linha de comando**
 
 > docker cp C:\**\italians.txt hbase-furb:/tmp
 > docker exec -it hbase-furb /bin/bash
@@ -15,10 +15,8 @@ b. professional-data
 > hbase shell /tmp/italians.txt
 
 Agora execute as seguintes operações:
-<ul>
-<li>1. Adicione mais 2 italianos mantendo adicionando informações como data
-de nascimento nas informações pessoais e um atributo de anos de
-experiência nas informações profissionais;
+<ol>
+<li> Adicione mais 2 italianos mantendo adicionando informações como data de nascimento nas informações pessoais e um atributo de anos de experiência nas informações profissionais;
 
 > put 'italians', '11', 'personal-data:name',  'Marcos'
 > put 'italians', '11', 'personal-data:city',  'Indaial'
@@ -35,20 +33,21 @@ experiência nas informações profissionais;
 > put 'italians', '12', 'professional-data:experience',  '12'
 </li>
 
-<li>2. Adicione o controle de 5 versões na tabela de dados pessoais.
+<li> Adicione o controle de 5 versões na tabela de dados pessoais.
+
 > alter 'italians', NAME => 'personal-data', VERSIONS => 5
 </li>
 
-</ul>
+</ol>
 
-**3. Faça 5 alterações em um dos italianos
+**3. Faça 5 alterações em um dos italianos.**
 > put 'italians', '5', 'personal-data:name',  'Rosalia'
 > put 'italians', '5', 'personal-data:city',  'Florence'
 > put 'italians', '5', 'professional-data:role',  'Biotecnologia'
 > put 'italians', '5', 'professional-data:salary',  '10000'
 > put 'italians', '5', 'professional-data:role',  'Developer'
 
-**4. Com o operador get, verifique como o HBase armazenou o histórico.
+**4. Com o operador get, verifique como o HBase armazenou o histórico.**
 > get 'italians', '5'
 ```
 personal-data:city              timestamp=1587241570883, value=Florence
@@ -57,13 +56,13 @@ professional-data:role          timestamp=1587241600589, value=Developer
 professional-data:salary        timestamp=1587241589051, value=10000
 ```
 
-**5. Utilize o scan para mostrar apenas o nome e profissão dos italianos.
+**5. Utilize o scan para mostrar apenas o nome e profissão dos italianos.**
 >scan 'italians', {COLUMNS => ['personal-data:name','professional-data:role']}
  
-**6. Apague os italianos com row id ímpar
+**6. Apague os italianos com row id ímpar.**
 
-**7. Crie um contador de idade 55 para o italiano de row id 5
+**7. Crie um contador de idade 55 para o italiano de row id 5.**
 >incr 'italians', '5', 'personal-data:age' , 55
 
-**8. Incremente a idade do italiano em 1
+**8. Incremente a idade do italiano em 1.**
 >incr 'italians', '5', 'personal-data:age' , 1
