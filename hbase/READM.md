@@ -101,7 +101,7 @@ Modifique para inserir os dados com a seguinte estrutura:
  mother
  
  **Familia de colunas: app-data**
- id_num,
+ id_num
  email
  registerDate
  ticketNumber
@@ -112,12 +112,14 @@ Modifique para inserir os dados com a seguinte estrutura:
  salary
 
  **Familia de Colunas: miscelaneous**
+ 
  favFruits
  movies
  cat
  dog
  
  Utilizando o MapReduce, faça um relatório ou mais de um indicando as seguintes informações:
+ 
 **1. Quantidade de gatos e cachorros na amostra**
 
 **2. Média de gatos e cachorros na população**
@@ -128,4 +130,4 @@ Modifique para inserir os dados com a seguinte estrutura:
 
 **5. Média de frutas e filmes por italiano**
 
-**6. Salário médio dos italianos **
+**6. Salário médio dos italianos**
