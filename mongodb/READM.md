@@ -7,9 +7,7 @@
 
 **2. Faça uma contagem dos pets na coleção**
 >db.pets.count()
-```bash
-8
-```
+`8`
 
 **3. Retorne apenas um elemento o método prático possível**
 >db.pets.findOne({})
