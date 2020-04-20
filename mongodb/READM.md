@@ -1,5 +1,5 @@
 
-##EXERCICIO 1
+## EXERCICIO 1
 
 **1. Adicione outro Peixe e um Hamster com nome Frodo**
 >db.pets.insert({name: "Frodo", species: "Peixe"})
@@ -7,14 +7,18 @@
 
 **2. Faça uma contagem dos pets na coleção**
 >db.pets.count()
+```bash
 8
+```
 
 **3. Retorne apenas um elemento o método prático possível**
 >db.pets.findOne({})
 
 **4. Identifique o ID para o Gato Kilha.**
 >db.pets.find({"species":"Gato","name":"Kilha"})
+```bash
 { "_id" : ObjectId("5e9a223beb1d5bcf54431e35"), "name" : "Kilha", "species" : "Gato" }
+```
  
 **5. Faça uma busca pelo ID e traga o Hamster Mike**
 >db.pets.find({ "_id": ObjectId("5e9a2215eb1d5bcf54431e33") })
@@ -28,19 +32,25 @@
 **8. Liste apenas o documento que é um Cachorro chamado Mike**
 >db.pets.find({"species":"Cachorro","name":"Mike"})
 
-##EXERCICIO 2
+## EXERCICIO 2
 
 **1. Liste/Conte todas as pessoas que tem exatamente 99 anos. Você pode usar um count para indicar a quantidade.**
 >db.italians.find({"age":{$eq: 99}}).count()
+```bash
 0
+```
 
 **2. Identifique quantas pessoas são elegíveis atendimento prioritário (pessoas com mais de 65 anos)**
 >db.italians.find({"age":{$gt: 65}}).count()
+```bash
 1686
+```
 
 **3. Identifique todos os jovens (pessoas entre 12 a 18 anos).**
 >db.italians.find({"age" : {"$gte" : 12, "$lte" : 18}}).count()
+```bash
 881
+```
 
 **4. Identifique quantas pessoas tem gatos, quantas tem cachorro e quantas não tem nenhum dos dois**
 >db.italians.find({"cat" : {"$exists" : true}}).count()
