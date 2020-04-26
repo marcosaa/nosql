@@ -439,62 +439,116 @@ CALL db.propertyKeys
 Coloque os comandos utilizado em cada item a seguir:
 
 **Exercise 9.1: Create ACTED_IN relationships.**
->
+> MATCH (m:Movie)
+WHERE m.title = 'Forrest Gump'
+MATCH (p:Person)
+WHERE p.name = 'Tom Hanks' OR p.name = 'Robin Wright' OR p.name = 'Gary Sinise'
+CREATE (p)-[:ACTED_IN]->(m)
 
 **Exercise 9.2: Create DIRECTED relationships.**
->
+> MATCH (m:Movie)
+WHERE m.title = 'Forrest Gump'
+MATCH (p:Person)
+WHERE p.name = 'Robert Zemeckis'
+CREATE (p)-[:DIRECTED]->(m)
 
 **Exercise 9.3: Create a HELPED relationship.**
->
+> MATCH (p1:Person)
+WHERE p1.name = 'Tom Hanks'
+MATCH (p2:Person)
+WHERE p2.name = 'Gary Sinise'
+CREATE (p1)-[:HELPED]->(p2)
 
 **Exercise 9.4: Query nodes and new relationships.**
->
+> MATCH (p:Person)-[rel]-(m:Movie)
+WHERE m.title = 'Forrest Gump'
+RETURN p, rel, m
 
 **Exercise 9.5: Add properties to relationships.**
->
+> MATCH (p:Person)-[rel:ACTED_IN]->(m:Movie)
+WHERE m.title = 'Forrest Gump'
+SET rel.roles =
+CASE p.name
+  WHEN 'Tom Hanks' THEN ['Forrest Gump']
+  WHEN 'Robin Wright' THEN ['Jenny Curran']
+  WHEN 'Gary Sinise' THEN ['Lieutenant Dan Taylor']
+END
+
+Set 3 properties, completed after 41 ms.
 
 **Exercise 9.6: Add a property to the HELPED relationship.**
->
+> MATCH (p1:Person)-[rel:HELPED]->(p2:Person)
+WHERE p1.name = 'Tom Hanks' AND p2.name = 'Gary Sinise'
+SET rel.research = 'war history'
+
+Set 1 property, completed after 544 ms.
 
 **Exercise 9.7: View the current list of property keys in the graph.**
->
+> call db.propertyKeys
 
 **Exercise 9.8: View the current schema of the graph.**
->
+> call db.schema.visualization
 
 **Exercise 9.9: Retrieve the names and roles for actors.**
->
+> MATCH (p:Person)-[rel:ACTED_IN]->(m:Movie)
+WHERE m.title = 'Forrest Gump'
+RETURN p.name, rel.roles
 
 **Exercise 9.10: Retrieve information about any specific relationships.**
->
+> MATCH (p1:Person)-[rel:HELPED]-(p2:Person)
+RETURN p1.name, rel, p2.name
 
 **Exercise 9.11: Modify a property of a relationship.**
->
+> MATCH (p:Person)-[rel:ACTED_IN]->(m:Movie)
+WHERE m.title = 'Forrest Gump' AND p.name = 'Gary Sinise'
+SET rel.roles =['Lt. Dan Taylor']
+
+Set 1 property, completed after 3 ms.
 
 **Exercise 9.12: Remove a property from a relationship.**
->
+> MATCH (p1:Person)-[rel:HELPED]->(p2:Person)
+WHERE p1.name = 'Tom Hanks' AND p2.name = 'Gary Sinise'
+REMOVE rel.research
+
+Set 1 property, completed after 4 ms.
 
 **Exercise 9.13: Confirm that your modifications were made to the graph.**
->
+> MATCH (p:Person)-[rel:ACTED_IN]->(m:Movie)
+WHERE m.title = 'Forrest Gump'
+return p, rel, m
 
 **10 – Deleting nodes and relationships**
 
 Coloque os comandos utilizado em cada item a seguir:
 
 **Exercise 10.1: Delete a relationship.**
->
+> MATCH (:Person)-[rel:HELPED]-(:Person)
+DELETE rel
+
+Deleted 1 relationship, completed after 118 ms.
 
 **Exercise 10.2: Confirm that the relationship has been deleted.**
->
+> MATCH (:Person)-[rel:HELPED]-(:Person)
+RETURN rel
 
 **Exercise 10.3: Retrieve a movie and all of its relationships.**
->
+> MATCH (p:Person)-[rel]-(m:Movie)
+WHERE m.title = 'Forrest Gump'
+RETURN p, rel, m
 
 **Exercise 10.4: Try deleting a node without detaching its relationships.**
->
+> MATCH (m:Movie)
+WHERE m.title = 'Forrest Gump'
+DELETE m
 
 **Exercise 10.5: Delete a Movie node, along with its relationships.**
->
+> MATCH (m:Movie)
+WHERE m.title = 'Forrest Gump'
+DETACH DELETE m
+
+Deleted 1 node, deleted 4 relationships, completed after 3 ms.
 
 **Exercise 10.6: Confirm that the Movie node has been deleted.**
->
+> MATCH (p:Person)-[rel]-(m:Movie)
+WHERE m.title = 'Forrest Gump'
+RETURN p, rel, m
