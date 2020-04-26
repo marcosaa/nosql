@@ -392,6 +392,48 @@ REMOVE p.birthPlace
 WHERE p.name = 'Robin Wright'
 RETURN p
 
+``` optional
+Add more labels to the Movie nodes to reflect the movie genre (action, drama, etc.).
+MATCH (m:Movie)
+WHERE toLower(m.title) =~ '(?i)^.*matrix.*$'
+and not EXISTS (m.genre)
+SET m.genre  = 'Action'
+
+MATCH (m:Movie)
+WHERE toLower(m.tagline) =~ '(?i)^.*love.*$'
+and not EXISTS (m.genre)
+SET m.genre  = 'Romance'
+
+MATCH (m:Movie)
+WHERE not EXISTS (m.genre)
+SET m.genre  = 'Other'
+
+Query the database using different labels for movies.
+MATCH (m:Movie)
+WHERE m.genre  = 'Action'
+return m
+
+Try adding or updating properties using the JSON-style syntax using = and +=.
+MATCH (m:Movie { genre: 'Other' })
+SET m += { label: 'Undefined' }
+RETURN m
+
+MATCH (m:Movie { genre: 'Other' })
+SET m = { label: 'Other' }
+RETURN m
+
+Add properties to nodes using the JSON-style format where you add all of the properties to the node.
+MATCH (m:Movie { label: 'Other' })
+SET m = {genre: "Action",title: "Teste", label: "Other"}
+RETURN m
+
+Query the database to confirm your additions.
+MATCH (m:Movie { genre: 'Action' }) return m
+
+Call the Cypher built-in method to retrieve all of the property keys in the graph.
+CALL db.propertyKeys
+```
+
 **9 – Creating relationships**
 
 Coloque os comandos utilizado em cada item a seguir:
