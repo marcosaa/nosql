@@ -7,16 +7,23 @@
 
 **2. Faça uma contagem dos pets na coleção**
 > db.pets.count()
-```
+``` mongo
 8
 ```
 
 **3. Retorne apenas um elemento o método prático possível**
 > db.pets.findOne({})
+``` mongo
+{
+        "_id" : ObjectId("5e9a2215eb1d5bcf54431e33"),
+        "name" : "Mike",
+        "species" : "Hamster"
+}
+```
 
 **4. Identifique o ID para o Gato Kilha.**
 > db.pets.find({"species":"Gato","name":"Kilha"})
-```
+``` mongo
 { "_id" : ObjectId("5e9a223beb1d5bcf54431e35"), "name" : "Kilha", "species" : "Gato" }
 ```
  
@@ -36,29 +43,29 @@
 
 **1. Liste/Conte todas as pessoas que tem exatamente 99 anos. Você pode usar um count para indicar a quantidade.**
 > db.italians.find({"age":{$eq: 99}}).count()
-```
+``` mongo
 0
 ```
 
 **2. Identifique quantas pessoas são elegíveis atendimento prioritário (pessoas com mais de 65 anos)**
 > db.italians.find({"age":{$gt: 65}}).count()
-```
+``` mongo
 1686
 ```
 
 **3. Identifique todos os jovens (pessoas entre 12 a 18 anos).**
 > db.italians.find({"age" : {"$gte" : 12, "$lte" : 18}}).count()
-```
+``` mongo
 881
 ```
 
 **4. Identifique quantas pessoas tem gatos, quantas tem cachorro e quantas não tem nenhum dos dois**
 > db.italians.find({"cat" : {"$exists" : true}}).count()
-```
+``` mongo
 6072
 ```
 > db.italians.find({"dog" : {"$exists" : true}}).count()
-```
+``` mongo
 4049
 ````
 >db.italians.find({$and:[{"dog" : {"$exists" : false}},{"cat" : {"$exists" : false}}]}).count()
@@ -68,13 +75,13 @@
 
 **5. Liste/Conte todas as pessoas acima de 60 anos que tenham gato**
 > db.italians.find({$and:[{"age":{$gt: 60}},{"cat" : {"$exists" : true}}]}).count()
-```
+``` mongo
 1400
 ```
 
 **6. Liste/Conte todos os jovens com cachorro**
 >db.italians.find({$and:[{"age" : {"$gte" : 12, "$lte" : 18}},{"dog" : {"$exists" : true}}]}).count()
-```
+``` mongo
 374
 ```
 
