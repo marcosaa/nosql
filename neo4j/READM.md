@@ -29,10 +29,10 @@ Coloque os comandos utilizado em cada item a seguir:
 ```optional
 -Retrieve all movie nodes in the database and view the data as a table. Notice the values for the released property for each node.
 
+
 -Try querying the graph using different years.
 MATCH (m:Movie {released:2006}) RETURN m
 ```
-
 
 **Exercise 2.3: Query the database for all property keys.**
 > CALL db.propertyKeys
@@ -42,8 +42,8 @@ MATCH (m:Movie {released:2006}) RETURN m
 
 ```optional
 -Retrieve all Movie nodes and view them as a table. Observe the properties that Movie nodes have.
-Query the database using a different year and also return more property values.
 
+Query the database using a different year and also return more property values.
 MATCH (m:Movie {released: 2008}) RETURN m.tagline, m.title
 ```
 
@@ -236,96 +236,161 @@ RETURN  m.title, p.name
 Coloque os comandos utilizado em cada item a seguir:
 
 **Exercise 6.1: Execute a query that returns duplicate records.**
->
+> MATCH (a:Person)-[:ACTED_IN]->(m:Movie)
+WHERE m.released >= 1990 AND m.released < 2000
+RETURN DISTINCT m.released, m.title, collect(a.name)
 
 **Exercise 6.2: Modify the query to eliminate duplication.**
->
+> MATCH (a:Person)-[:ACTED_IN]->(m:Movie)
+WHERE m.released >= 1990 AND m.released < 2000
+RETURN  m.released, collect(m.title), collect(a.name)
 
 **Exercise 6.3: Modify the query to eliminate more duplication.**
->
+> MATCH (a:Person)-[:ACTED_IN]->(m:Movie)
+WHERE m.released >= 1990 AND m.released < 2000
+RETURN  m.released, collect(DISTINCT m.title), collect(a.name)
 
 **Exercise 6.4: Sort results returned.**
->
+> MATCH (a:Person)-[:ACTED_IN]->(m:Movie)
+WHERE m.released >= 1990 AND m.released < 2000
+RETURN  m.released, collect(DISTINCT m.title), collect(a.name)
+ORDER BY m.released DESC
 
 **Exercise 6.5: Retrieve the top 5 ratings and their associated movies.**
->
+> MATCH (:Person)-[r:REVIEWED]->(m:Movie)
+RETURN  m.title AS movie, r.rating AS rating
+ORDER BY r.rating DESC LIMIT 5
 
 **Exercise 6.6: Retrieve all actors that have not appeared in more than 3 movies.**
->
+> MATCH (a:Person)-[:ACTED_IN]->(m:Movie)
+WITH  a,  count(a) AS numMovies, collect(m.title) AS movies
+WHERE numMovies <= 3
+RETURN a.name, movies
 
 **7 – Working with cypher data**
 
 Coloque os comandos utilizado em cada item a seguir:
 
 **Exercise 7.1: Collect and use lists.**
->
+> MATCH (a:Person)-[:ACTED_IN]->(m:Movie),
+      (m)<-[:PRODUCED]-(p:Person)
+WITH  m, collect(DISTINCT a.name) AS cast, collect(DISTINCT p.name) AS producers
+RETURN DISTINCT m.title, cast, producers
+ORDER BY size(cast)
 
 **Exercise 7.2: Collect a list.**
->
+> MATCH (p:Person)-[:ACTED_IN]->(m:Movie)
+WITH p, collect(m) AS movies
+WHERE size(movies)  > 5
+RETURN p.name, movies
 
 **Exercise 7.3: Unwind a list.**
->
+> MATCH (p:Person)-[:ACTED_IN]->(m:Movie)
+WITH p, collect(m) AS movies
+WHERE size(movies)  > 5
+WITH p, movies UNWIND movies AS movie
+RETURN p.name, movie.title
 
 **Exercise 7.4: Perform a calculation with the date type.**
->
+> MATCH (a:Person)-[:ACTED_IN]->(m:Movie)
+WHERE a.name = 'Tom Hanks'
+RETURN  m.title, m.released, date().year  - m.released as yearsAgoReleased, m.released  - a.born AS `age of Tom`
+ORDER BY yearsAgoReleased
 
 **8 – Creating nodes**
 
 Coloque os comandos utilizado em cada item a seguir:
 
 **Exercise 8.1: Create a Movie node.**
->
+> CREATE (:Movie {title: 'Forrest Gump'})
 
 **Exercise 8.2: Retrieve the newly-created node.**
->
+> MATCH (m:Movie)
+WHERE m.title = 'Forrest Gump'
+RETURN m
 
 **Exercise 8.3: Create a Person node.**
->
+> CREATE (:Person {name: 'Robin Wright'})
 
 **Exercise 8.4: Retrieve the newly-created node.**
->
+> MATCH (p:Person)
+WHERE p.name = 'Robin Wright'
+RETURN p
 
 **Exercise 8.5: Add a label to a node.**
->
+> MATCH (m:Movie)
+WHERE m.released < 2010
+SET m:OlderMovie
+RETURN DISTINCT labels(m)
 
 **Exercise 8.6: Retrieve the node using the new label.**
->
+> MATCH (m:OlderMovie)
+RETURN m.title, m.released
 
 **Exercise 8.7: Add the Female label to selected nodes.**
->
+> MATCH (p:Person)
+WHERE p.name STARTS WITH 'Robin'
+SET p:Female
 
 **Exercise 8.8: Retrieve all Female nodes.**
->
+> MATCH (p:Female)
+RETURN p.name
 
 **Exercise 8.9: Remove the Female label from the nodes that have this label.**
->
+> MATCH (p:Female)
+REMOVE p:Female
+
+Removed 2 labels, completed after 2 ms
 
 **Exercise 8.10: View the current schema of the graph.**
->
+> CALL db.schema.visualization
 
 **Exercise 8.11: Add properties to a movie.**
->
+> MATCH (m:Movie)
+WHERE m.title = 'Forrest Gump'
+SET m:OlderMovie,
+    m.released = 1994,
+    m.tagline = "Life is like a box of chocolates...you never know what you're gonna get.",
+    m.lengthInMinutes = 142
+    
+Added 1 label, set 3 properties, completed after 3 ms.
 
 **Exercise 8.12: Retrieve an OlderMovie node to confirm the label and properties.**
->
+> MATCH (m:OlderMovie)
+WHERE m.title = 'Forrest Gump'
+RETURN m
 
 **Exercise 8.13: Add properties to the person, Robin Wright.**
->
+> MATCH (p:Person)
+WHERE p.name = 'Robin Wright'
+SET p.born = 1966, p.birthPlace = 'Dallas'
 
 **Exercise 8.14: Retrieve an updated Person node.**
->
+> MATCH (p:Person)
+WHERE p.name = 'Robin Wright'
+RETURN p
 
 **Exercise 8.15: Remove a property from a Movie node.**
->
+> MATCH (m:Movie)
+WHERE m.title = 'Forrest Gump'
+SET m.lengthInMinutes = null
+
+Set 1 property, completed after 7 ms.
 
 **Exercise 8.16: Retrieve the node to confirm that the property has been removed.**
->
+> MATCH (m:Movie)
+WHERE m.title = 'Forrest Gump'
+RETURN m
 
 **Exercise 8.17: Remove a property from a Person node.**
->
+> MATCH (p:Person)
+WHERE p.name = 'Robin Wright'
+REMOVE p.birthPlace
 
 **Exercise 8.18: Retrieve the node to confirm that the property has been removed.**
->
+> MATCH (p:Person)
+WHERE p.name = 'Robin Wright'
+RETURN p
 
 **9 – Creating relationships**
 
