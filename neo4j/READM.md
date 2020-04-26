@@ -5,101 +5,179 @@
 Coloque os comandos utilizado em cada item a seguir:
 
 **Exercise 1.1: Retrieve all nodes from the database.**
->
+> MATCH (n) RETURN n
 
 **Exercise 1.2: Examine the data model for the graph.**
->
+> call db.schema.visualization() 
 
 **Exercise 1.3: Retrieve all Person nodes.**
->
+> MATCH (p:Person) RETURN p
 
 **Exercise 1.4: Retrieve all Movie nodes.**
->
+> MATCH (m:Movie) RETURN m
 
 **2 – Filtering queries using property values**
 
 Coloque os comandos utilizado em cada item a seguir:
 
 **Exercise 2.1: Retrieve all movies that were released in a specific year.**
->
+> MATCH (m:Movie {released:2003}) RETURN m
 
 **Exercise 2.2: View the retrieved results as a table.**
->
+> MATCH (m:Movie {released:2003}) RETURN m
+
+´´´
+Retrieve all movie nodes in the database and view the data as a table. Notice the values for the released property for each node.
+
+Try querying the graph using different years.
+
+MATCH (m:Movie {released:2006}) RETURN m
+´´´
+
 
 **Exercise 2.3: Query the database for all property keys.**
->
+> CALL db.propertyKeys
 
 **Exercise 2.4: Retrieve all Movies released in a specific year, returning their titles.**
->
+> MATCH (m:Movie {released: 2006}) RETURN m.title
+
+
+´´´
+Retrieve all Movie nodes and view them as a table. Observe the properties that Movie nodes have.
+
+Query the database using a different year and also return more property values.
+
+MATCH (m:Movie {released: 2008}) RETURN m.tagline, m.title
+´´´
+
 
 **Exercise 2.5: Display title, released, and tagline values for every Movie node in the graph.**
->
+> MATCH (m:Movie) RETURN m.title, m.released, m.tagline
 
 **Exercise 2.6: Display more user-friendly headers in the table**
->
+> MATCH (m:Movie) RETURN m.title AS `movie title`, m.released AS released, m.tagline AS tagLine
 
 **3 - Filtering queries using relationships**
->
 
 Coloque os comandos utilizado em cada item a seguir:
 
 **Exercise 3.1: Display the schema of the database.**
->
+> CALL db.schema.visualization()
 
 **Exercise 3.2: Retrieve all people who wrote the movie Speed Racer.**
->
+> MATCH (p:Person)-[:WROTE]->(:Movie {title: 'Speed Racer'}) RETURN p.name
+
+´´´
+Retrieve all people who have written other movies.
+
+MATCH (p:Person)-[:WROTE]->(m:Movie)
+WHERE (p)-[:PRODUCED]->(m) 
+RETURN p.name,m.title
+
+Retrieve people who have acted in a particular movie.
+
+MATCH (p:Person)-[:WROTE]->(m:Movie)
+WHERE (p)-[:ACTED_IN]->(m) 
+RETURN p.name,m.title
+
+Retrieve people who have directed a particular movie.
+
+MATCH (p:Person)-[:WROTE]->(m:Movie)
+WHERE (p)-[:DIRECTED]->(m) 
+RETURN p.name,m.title
+´´´
 
 **Exercise 3.3: Retrieve all movies that are connected to the person, Tom Hanks.** 
->
+> MATCH (m:Movie)<--(:Person {name: 'Tom Hanks'}) RETURN m.title
 
 **Exercise 3.4: Retrieve information about the relationships Tom Hanks had with the set of movies retrieved earlier.**
->
+> MATCH (m:Movie)-[rel]-(:Person {name: 'Tom Hanks'}) RETURN m.title, type(rel)
 
 **Exercise 3.5: Retrieve information about the roles that Tom Hanks acted in.**
->
+> MATCH (m:Movie)-[rel:ACTED_IN]-(:Person {name: 'Tom Hanks'}) RETURN m.title, rel.roles
 
 **4 – Filtering queries using WHERE clause**
 
 Coloque os comandos utilizado em cada item a seguir:
 
 **Exercise 4.1: Retrieve all movies that Tom Cruise acted in.**
->
+> MATCH (a:Person)-[:ACTED_IN]->(m:Movie)
+WHERE a.name = 'Tom Cruise'
+RETURN m.title as Movie
 
 **Exercise 4.2: Retrieve all people that were born in the 70’s.**
->
+> MATCH (a:Person)
+WHERE a.born >= 1970 AND a.born < 1980
+RETURN a.name as Name, a.born as `Year Born`
 
 **Exercise 4.3: Retrieve the actors who acted in the movie The Matrix who were born after 1960.**
->
+> MATCH (a:Person)-[:ACTED_IN]->(m:Movie)
+WHERE a.born > 1960 AND m.title = 'The Matrix'
+RETURN a.name as Name, a.born as `Year Born`
 
 **Exercise 4.4: Retrieve all movies by testing the node label and a property.**
->
+> MATCH (m)
+WHERE m:Movie AND m.released = 2000
+RETURN m.title
 
 **Exercise 4.5: Retrieve all people that wrote movies by testing the relationship between two nodes.**
->
+> MATCH (a)-[rel]->(m)
+WHERE a:Person AND type(rel) = 'WROTE' AND m:Movie
+RETURN a.name as Name, m.title as Movie
 
 **Exercise 4.6: Retrieve all people in the graph that do not have a property.**
->
+> MATCH (a:Person)
+WHERE NOT exists(a.born)
+RETURN a.name as Name
 
 **Exercise 4.7: Retrieve all people related to movies where the relationship has a property.**
->
+> MATCH (a:Person)-[rel]->(m:Movie)
+WHERE exists(rel.rating)
+RETURN a.name as Name, m.title as Movie, rel.rating as Rating
 
 **Exercise 4.8: Retrieve all actors whose name begins with James.**
->
+> MATCH (a:Person)-[:ACTED_IN]->(:Movie)
+WHERE a.name STARTS WITH 'James'
+RETURN a.name
 
 **Exercise 4.9: Retrieve all all REVIEW relationships from the graph with filtered results.**
->
+> MATCH (:Person)-[r:REVIEWED]->(m:Movie)
+WHERE toLower(r.summary) CONTAINS 'fun'
+RETURN  m.title as Movie, r.summary as Review, r.rating as Rating
+
+´´´
+Retrieve all movies in the database that have love in their tagline and return the movie titles
+
+MATCH (m:Movie)
+WHERE m.tagline =~ '(?i)^.*love.*$'
+RETURN m.title
+
+Retrieve movies in the database, specifying a regular expression for the content of the tagline.
+
+MATCH (m:Movie)
+WHERE m.tagline =~ '(?i)^.*and.*$'
+RETURN m
+´´´
 
 **Exercise 4.10: Retrieve all people who have produced a movie, but have not directed a movie.**
->
+> MATCH (a:Person)-[:PRODUCED]->(m:Movie)
+WHERE NOT ((a)-[:DIRECTED]->(:Movie))
+RETURN a.name, m.title
 
 **Exercise 4.11: Retrieve the movies and their actors where one of the actors also directed the movie.**
->
+> MATCH (a1:Person)-[:ACTED_IN]->(m:Movie)<-[:ACTED_IN]-(a2:Person)
+WHERE exists( (a2)-[:DIRECTED]->(m) )
+RETURN  a1.name as Actor, a2.name as `Actor/Director`, m.title as Movie
 
 **Exercise 4.12: Retrieve all movies that were released in a set of years.**
->
+> MATCH (m:Movie)
+WHERE m.released in [2000, 2004, 2008]
+RETURN m.title, m.released
 
 **Exercise 4.13: Retrieve the movies that have an actor’s role that is the name of the movie.**
->
+> MATCH (a:Person)-[r:ACTED_IN]->(m:Movie)
+WHERE m.title in r.roles
+RETURN  m.title as Movie, a.name as Actor
 
 **5 – Controlling query processing**
 
