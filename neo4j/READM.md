@@ -27,10 +27,9 @@ Coloque os comandos utilizado em cada item a seguir:
 > MATCH (m:Movie {released:2003}) RETURN m
 
 ```optional
-- Retrieve all movie nodes in the database and view the data as a table. Notice the values for the released property for each node.
+-Retrieve all movie nodes in the database and view the data as a table. Notice the values for the released property for each node.
 
-- Try querying the graph using different years.
-
+-Try querying the graph using different years.
 MATCH (m:Movie {released:2006}) RETURN m
 ```
 
@@ -41,14 +40,12 @@ MATCH (m:Movie {released:2006}) RETURN m
 **Exercise 2.4: Retrieve all Movies released in a specific year, returning their titles.**
 > MATCH (m:Movie {released: 2006}) RETURN m.title
 
-
 ```optional
-- Retrieve all Movie nodes and view them as a table. Observe the properties that Movie nodes have.
+-Retrieve all Movie nodes and view them as a table. Observe the properties that Movie nodes have.
 Query the database using a different year and also return more property values.
 
 MATCH (m:Movie {released: 2008}) RETURN m.tagline, m.title
 ```
-
 
 **Exercise 2.5: Display title, released, and tagline values for every Movie node in the graph.**
 > MATCH (m:Movie) RETURN m.title, m.released, m.tagline
@@ -67,20 +64,17 @@ Coloque os comandos utilizado em cada item a seguir:
 > MATCH (p:Person)-[:WROTE]->(:Movie {title: 'Speed Racer'}) RETURN p.name
 
 ```optional
- - Retrieve all people who have written other movies.
-
+-Retrieve all people who have written other movies.
 MATCH (p:Person)-[:WROTE]->(m:Movie)
 WHERE (p)-[:PRODUCED]->(m) 
 RETURN p.name,m.title
 
- - Retrieve people who have acted in a particular movie.
-
+-Retrieve people who have acted in a particular movie.
 MATCH (p:Person)-[:WROTE]->(m:Movie)
 WHERE (p)-[:ACTED_IN]->(m) 
 RETURN p.name,m.title
 
- - Retrieve people who have directed a particular movie.
-
+-Retrieve people who have directed a particular movie.
 MATCH (p:Person)-[:WROTE]->(m:Movie)
 WHERE (p)-[:DIRECTED]->(m) 
 RETURN p.name,m.title
@@ -145,14 +139,12 @@ WHERE toLower(r.summary) CONTAINS 'fun'
 RETURN  m.title as Movie, r.summary as Review, r.rating as Rating
 
 ```optional
- - Retrieve all movies in the database that have love in their tagline and return the movie titles
-
+-Retrieve all movies in the database that have love in their tagline and return the movie titles
 MATCH (m:Movie)
 WHERE m.tagline =~ '(?i)^.*love.*$'
 RETURN m.title
 
- - Retrieve movies in the database, specifying a regular expression for the content of the tagline.
-
+-Retrieve movies in the database, specifying a regular expression for the content of the tagline.
 MATCH (m:Movie)
 WHERE m.tagline =~ '(?i)^.*and.*$'
 RETURN m
@@ -183,37 +175,61 @@ RETURN  m.title as Movie, a.name as Actor
 Coloque os comandos utilizado em cada item a seguir:
 
 **Exercise 5.1: Retrieve data using multiple MATCH patterns.**
->
+> MATCH (a:Person)-[:ACTED_IN]->(m:Movie)<-[:DIRECTED]-(d:Person),
+      (a2:Person)-[:ACTED_IN]->(m)
+WHERE a.name = 'Gene Hackman'
+RETURN m.title as movie, d.name AS director , a2.name AS `co-actors`
 
 **Exercise 5.2: Retrieve particular nodes that have a relationship.**
->
+> MATCH (p1:Person)-[:FOLLOWS]-(p2:Person)
+WHERE p1.name = 'James Thompson'
+RETURN p1, p2
 
 **Exercise 5.3: Modify the query to retrieve nodes that are exactly three hops away.**
->
+> MATCH (p1:Person)-[:FOLLOWS*3]-(p2:Person)
+WHERE p1.name = 'James Thompson'
+RETURN p1, p2
 
 **Exercise 5.4: Modify the query to retrieve nodes that are one and two hops away.**
->
+> MATCH (p1:Person)-[:FOLLOWS*1..2]-(p2:Person)
+WHERE p1.name = 'James Thompson'
+RETURN p1, p2
 
 **Exercise 5.5: Modify the query to retrieve particular nodes that are connected no matter how many hops are required.**
->
+> MATCH (p1:Person)-[:FOLLOWS*]-(p2:Person)
+WHERE p1.name = 'James Thompson'
+RETURN p1, p2
 
 **Exercise 5.6: Specify optional data to be retrieved during the query.**
->
+> MATCH (p:Person)
+WHERE p.name STARTS WITH 'Tom'
+OPTIONAL MATCH (p)-[:DIRECTED]->(m:Movie)
+RETURN p.name, m.title
 
 **Exercise 5.7: Retrieve nodes by collecting a list.**
->
+> MATCH (p:Person)-[:ACTED_IN]->(m:Movie)
+RETURN p.name as actor, collect(m.title) AS `movie list`
 
 **Exercise 5.9: Retrieve nodes as lists and return data associated with the corresponding lists.**
->
+> MATCH (p:Person)-[:REVIEWED]->(m:Movie)
+RETURN m.title as movie, count(p) as numReviews, collect(p.name) as reviewers
 
 **Exercise 5.10: Retrieve nodes and their relationships as lists.**
->
+> MATCH (d:Person)-[:DIRECTED]->(m:Movie)<-[:ACTED_IN]-(a:Person)
+RETURN d.name AS director, count(a) AS `number actors` , collect(a.name) AS `actors worked with`
 
 **Exercise 5.11: Retrieve the actors who have acted in exactly five movies.**
->
+> MATCH (a:Person)-[:ACTED_IN]->(m:Movie)
+WITH  a, count(a) AS numMovies, collect(m.title) AS movies
+WHERE numMovies = 5
+RETURN a.name, movies
 
 **Exercise 5.12: Retrieve the movies that have at least 2 directors with other optional data.**
->
+> MATCH (m:Movie)
+WITH m, size((:Person)-[:DIRECTED]->(m)) AS directors
+WHERE directors >= 2
+OPTIONAL MATCH (p:Person)-[:REVIEWED]->(m)
+RETURN  m.title, p.name
 
 **6 – Controlling results returned**
 
