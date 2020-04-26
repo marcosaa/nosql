@@ -26,13 +26,13 @@ Coloque os comandos utilizado em cada item a seguir:
 **Exercise 2.2: View the retrieved results as a table.**
 > MATCH (m:Movie {released:2003}) RETURN m
 
-´´´
-Retrieve all movie nodes in the database and view the data as a table. Notice the values for the released property for each node.
+```optional
+- Retrieve all movie nodes in the database and view the data as a table. Notice the values for the released property for each node.
 
-Try querying the graph using different years.
+- Try querying the graph using different years.
 
 MATCH (m:Movie {released:2006}) RETURN m
-´´´
+```
 
 
 **Exercise 2.3: Query the database for all property keys.**
@@ -42,13 +42,12 @@ MATCH (m:Movie {released:2006}) RETURN m
 > MATCH (m:Movie {released: 2006}) RETURN m.title
 
 
-´´´
-Retrieve all Movie nodes and view them as a table. Observe the properties that Movie nodes have.
-
+```optional
+- Retrieve all Movie nodes and view them as a table. Observe the properties that Movie nodes have.
 Query the database using a different year and also return more property values.
 
 MATCH (m:Movie {released: 2008}) RETURN m.tagline, m.title
-´´´
+```
 
 
 **Exercise 2.5: Display title, released, and tagline values for every Movie node in the graph.**
@@ -67,25 +66,25 @@ Coloque os comandos utilizado em cada item a seguir:
 **Exercise 3.2: Retrieve all people who wrote the movie Speed Racer.**
 > MATCH (p:Person)-[:WROTE]->(:Movie {title: 'Speed Racer'}) RETURN p.name
 
-´´´
-Retrieve all people who have written other movies.
+```optional
+ - Retrieve all people who have written other movies.
 
 MATCH (p:Person)-[:WROTE]->(m:Movie)
 WHERE (p)-[:PRODUCED]->(m) 
 RETURN p.name,m.title
 
-Retrieve people who have acted in a particular movie.
+ - Retrieve people who have acted in a particular movie.
 
 MATCH (p:Person)-[:WROTE]->(m:Movie)
 WHERE (p)-[:ACTED_IN]->(m) 
 RETURN p.name,m.title
 
-Retrieve people who have directed a particular movie.
+ - Retrieve people who have directed a particular movie.
 
 MATCH (p:Person)-[:WROTE]->(m:Movie)
 WHERE (p)-[:DIRECTED]->(m) 
 RETURN p.name,m.title
-´´´
+```
 
 **Exercise 3.3: Retrieve all movies that are connected to the person, Tom Hanks.** 
 > MATCH (m:Movie)<--(:Person {name: 'Tom Hanks'}) RETURN m.title
@@ -145,19 +144,19 @@ RETURN a.name
 WHERE toLower(r.summary) CONTAINS 'fun'
 RETURN  m.title as Movie, r.summary as Review, r.rating as Rating
 
-´´´
-Retrieve all movies in the database that have love in their tagline and return the movie titles
+```optional
+ - Retrieve all movies in the database that have love in their tagline and return the movie titles
 
 MATCH (m:Movie)
 WHERE m.tagline =~ '(?i)^.*love.*$'
 RETURN m.title
 
-Retrieve movies in the database, specifying a regular expression for the content of the tagline.
+ - Retrieve movies in the database, specifying a regular expression for the content of the tagline.
 
 MATCH (m:Movie)
 WHERE m.tagline =~ '(?i)^.*and.*$'
 RETURN m
-´´´
+```
 
 **Exercise 4.10: Retrieve all people who have produced a movie, but have not directed a movie.**
 > MATCH (a:Person)-[:PRODUCED]->(m:Movie)
