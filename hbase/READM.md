@@ -81,6 +81,12 @@ professional-data:salary        timestamp=1587241589051, value=10000
 > scan 'italians', {COLUMNS => ['personal-data:name','professional-data:role']}
  
 **6. Apague os italianos com row id ímpar.**
+> deleteall 'italians','1'
+> deleteall 'italians','11'
+> deleteall 'italians','3'
+> deleteall 'italians','5'
+> deleteall 'italians','7'
+> deleteall 'italians','9'
 
 **7. Crie um contador de idade 55 para o italiano de row id 5.**
 > incr 'italians', '5', 'personal-data:age' , 55
