@@ -270,3 +270,6 @@ repetir). Quantas pessoas são?
 
 2. Contabilize quantos e-mails tem a palavra “fraud”
 > db.stocks.find({"sender":{$exists:1},"text": /.*fraud.*/}).count()
+```mongodb
+23
+```
