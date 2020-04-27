@@ -261,15 +261,15 @@ comunicade do MongoDB utiliza muito esse dataset pois o mesmo se tornou
 público, então vamos importar esse material também:
 
 ```mongodb
-mongoimport --db stocks --collection stocks --file enron.json
+mongoimport --db stocks --collection eron --file enron.json
 ```
 
 1. Liste as pessoas que enviaram e-mails (de forma distinta, ou seja, sem
 repetir). Quantas pessoas são?
->
+> db.eron.distinct("sender").length
 
 2. Contabilize quantos e-mails tem a palavra “fraud”
-> db.stocks.find({"sender":{$exists:1},"text": /fraud/}).count()
+> db.eron.find({"sender":{$exists:1},"text": /fraud/}).count()
 ```mongodb
 23
 ```
