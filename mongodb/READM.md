@@ -211,7 +211,7 @@ seguintes perguntas:
 > db.stocks.find({"EPS growth past 5 years":{ $exists: 1}}).sort({"EPS growth past 5 years":-1}).limit(10)
 
 **4. Qual foi o setor mais rentável?**
-> db.getCollection('stocks').aggregate([
+> db.stocks.aggregate([
 { $group : { _id : {
       Sector: "$Sector"
     },total: { $sum: "$EPS growth past 5 years" } } 
@@ -229,16 +229,27 @@ seguintes perguntas:
 ```
 
 **5. Ordene as ações pelo profit e usando um cursor, liste as ações.**
->
+> var myCursor =  db.stocks.find({"Profit Margin":{ $exists: 1}}).sort({"Profit Margin":-1});
+myCursor.forEach(printjson);
 
 **6. Renomeie o campo “Profit Margin” para apenas “profit”.**
->
+> db.stocks.update({}, { $rename: { 'Profit Margin': 'profit' } },{ multi: true })
 
 **7. Agora liste apenas a empresa e seu respectivo resultado**
->
+> db.stocks.aggregate([
+{ $group : { _id : {
+      Company: "$Company"
+    },total: { $sum: "$EPS growth past 5 years" } } 
+},
+{ $sort: { total: -1 } }
+])
 
 **8. Analise as ações. É uma bola de cristal na sua mão... Quais as três ações você investiria?**
->
+> db.stocks.find({"Analyst Recom":{$exists:1}}).sort({"Analyst Recom":-1,"EPS growth past 5 years":-1,"profit":1}).limit(3) 
 
 **9. Liste as ações agrupadas por setor**
->
+> db.stocks.aggregate([
+    { $group: { _id: { Sector: "$Sector"}
+              } 
+  }
+])
