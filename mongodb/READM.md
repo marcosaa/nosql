@@ -157,7 +157,7 @@ WriteResult({ "nRemoved" : 122 })
 ```
 
 **17. Utilizando o framework agregate, liste apenas as pessoas com nomes iguais a sua respectiva mãe e que tenha gato ou cachorro.**
-> db.getCollection('italians').aggregate([
+> db.italians.aggregate([
 {'$match': { mother: { $exists: 1}, $or: [ { cat: { $exists: 1}, dog: { $exists: 1}}]  }},
 {'$project': {
 "firstname": 1,
@@ -168,7 +168,26 @@ WriteResult({ "nRemoved" : 122 })
 ])
 
 **18. Utilizando aggregate framework, faça uma lista de nomes única de nomes. Faça isso usando apenas o primeiro nome**
+>db.italians.aggregate([
+{ $group : { _id : "$firstname",count: { $sum: 1 } } }
+])
 
 **19. Agora faça a mesma lista do item acima, considerando nome completo.**
+>db.italians.aggregate([
+.aggregate([
+{ $group : { _id : {
+      firstname: "$firstname",
+      surname: "$surname"
+    },count: { $sum: 1 } } }
+])
 
 **20. Procure pessoas que gosta de Banana ou Maçã, tenham cachorro ou gato,mais de 20 e menos de 60 anos.**
+> db.getCollection('italians').aggregate([
+{'$match': {"favFruits": { $in:['Banana','Maçã']}, 
+            "age" : {"$gt" : 20, "$lt" : 60},
+            $or: [ { cat: { $exists: true}, dog: { $exists: true}}]
+           
+           }
+},
+ { $sort: { age: 1 } }
+])
