@@ -182,7 +182,7 @@ WriteResult({ "nRemoved" : 122 })
 ])
 
 **20. Procure pessoas que gosta de Banana ou Maçã, tenham cachorro ou gato,mais de 20 e menos de 60 anos.**
-> db.getCollection('italians').aggregate([
+> db.italians.aggregate([
 {'$match': {"favFruits": { $in:['Banana','Maçã']}, 
             "age" : {"$gt" : 20, "$lt" : 60},
             $or: [ { cat: { $exists: true}, dog: { $exists: true}}]
@@ -202,16 +202,31 @@ Analise um pouco a estrutura dos dados novamente e em seguida, responda as
 seguintes perguntas:
 
 **1. Liste as ações com profit acima de 0.5 (limite a 10 o resultado)**
->
+> db.stocks.find({"Profit Margin":{"$gt" : 0.5}}).limit(10)
 
 **2. Liste as ações com perdas (limite a 10 novamente)**
->
+> db.stocks.find({"Return on Investment":{"$lt" : 0}}).limit(10)
 
 **3. Liste as 10 ações mais rentáveis**
->
+> db.stocks.find({"EPS growth past 5 years":{ $exists: 1}}).sort({"EPS growth past 5 years":-1}).limit(10)
 
 **4. Qual foi o setor mais rentável?**
-> 
+> db.getCollection('stocks').aggregate([
+{ $group : { _id : {
+      Sector: "$Sector"
+    },total: { $sum: "$EPS growth past 5 years" } } 
+},
+{ $sort: { total: -1 } },
+{ $limit : 1 }
+])
+```mongodb
+{
+    "_id" : {
+        "Sector" : "Healthcare"
+    },
+    "total" : 46.5971
+}
+```
 
 **5. Ordene as ações pelo profit e usando um cursor, liste as ações.**
 >
