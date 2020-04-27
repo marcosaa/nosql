@@ -188,3 +188,42 @@ WriteResult({ "nRemoved" : 122 })
             $or: [ { cat: { $exists: true}, dog: { $exists: true}}]
            }
 }, { $sort: { age: 1 } } ])
+
+## EXERCICIO 3
+Importe o arquivo stocks.json do repositório Downloads NoSQL FURB. Esses dados
+são dados reais da bolsa americana de 2015. A importação do arquivo JSON é um
+pouco diferente da execução de um script:
+
+```mongodb
+mongoimport --db stocks --collection stocks --file stocks.json
+```
+
+Analise um pouco a estrutura dos dados novamente e em seguida, responda as
+seguintes perguntas:
+
+**1. Liste as ações com profit acima de 0.5 (limite a 10 o resultado)**
+>
+
+**2. Liste as ações com perdas (limite a 10 novamente)**
+>
+
+**3. Liste as 10 ações mais rentáveis**
+>
+
+**4. Qual foi o setor mais rentável?**
+> 
+
+**5. Ordene as ações pelo profit e usando um cursor, liste as ações.**
+>
+
+**6. Renomeie o campo “Profit Margin” para apenas “profit”.**
+>
+
+**7. Agora liste apenas a empresa e seu respectivo resultado**
+>
+
+**8. Analise as ações. É uma bola de cristal na sua mão... Quais as três ações você investiria?**
+>
+
+**9. Liste as ações agrupadas por setor**
+>
