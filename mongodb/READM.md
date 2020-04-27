@@ -130,30 +130,31 @@
         "age" : 15
     }
 })
-´´´ mongodb
+``` mongo
 WriteResult({ "nInserted" : 1 })
-´´´
+```
 
 **14. Infelizmente o Leão comeu o italiano. Remova essa pessoa usando o Id.**
 > db.italians.find( { $where: function() { return this.lion != null } },{_id:1} )
-´´´ mongodb
+``` mongo
 {"_id" : ObjectId("5ea635561392e7225d23e7b4")}
-´´´
+```
 > db.italians.remove({"_id" : ObjectId("5ea635561392e7225d23e7b4")})
-´´´ mongodb
+``` mongo
 WriteResult({ "nRemoved" : 1 })
-´´´
+```
+
 **15. Passou um ano. Atualize a idade de todos os italianos e dos bichanos em 1.**
 > db.italians.update({},{"$inc" : {"age" : 1,"dog.age" : 1,"cat.age" : 1}},{ multi: true })
-´´´ mongodb
+``` mongo
 WriteResult({ "nMatched" : 10000, "nUpserted" : 0, "nModified" : 10000 })
-´´´
+```
 
 **16. O Corona Vírus chegou na Itália e misteriosamente atingiu pessoas somente com gatos e de 66 anos. Remova esses italianos.**
 > db.italians.remove({$and:[{"age": 66},{"cat" : {"$exists" : true}}]})
-´´´ mongodb
+``` mongo
 WriteResult({ "nRemoved" : 122 })
-´´´
+```
 
 **17. Utilizando o framework agregate, liste apenas as pessoas com nomes iguais a sua respectiva mãe e que tenha gato ou cachorro.**
 > db.getCollection('italians').aggregate([
