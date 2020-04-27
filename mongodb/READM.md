@@ -186,8 +186,5 @@ WriteResult({ "nRemoved" : 122 })
 {'$match': {"favFruits": { $in:['Banana','Maçã']}, 
             "age" : {"$gt" : 20, "$lt" : 60},
             $or: [ { cat: { $exists: true}, dog: { $exists: true}}]
-           
            }
-},
- { $sort: { age: 1 } }
-])
+}, { $sort: { age: 1 } } ])
