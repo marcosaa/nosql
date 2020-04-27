@@ -89,15 +89,23 @@
 > db.italians.find({ $where: "this.dog == true" } ).count()
  
 **8. Liste todas as pessoas mais novas que seus respectivos gatos.**
-> db.italians.find({"cat" : {"age" : 11}}
+> db.italians.find( { $where: function() { 
+    return this.cat != null && this.age < this.cat.age
+} } );
 
 **9. Liste as pessoas que tem o mesmo nome que seu bichano (gatou ou cachorro)**
+> db.italians.find( { $where: function() {
+    return (this.cat != null && this.cat.name == this.name) || (this.dog != null && this.dog.name == this.name)
+} } )
 
 **10. Projete apenas o nome e sobrenome das pessoas com tipo de sangue de fator RH negativo**
+> db.italians.find({"bloodType":/-/},{ firstname:1,surname:1,_id:0 })
 
 **11. Projete apenas os animais dos italianos. Devem ser listados os animais com nome e idade. Não mostre o identificado do mongo (ObjectId)**
+> db.italians.find({}, {'cat':1,'dog':1,_id:0});
 
 **12. Quais são as 5 pessoas mais velhas com sobrenome Rossi?**
+> db.italians.find({}).sort({age : -1}).limit(5)
 
 **13. Crie um italiano que tenha um leão como animal de estimação. Associe um nome e idade ao bichano**
 
