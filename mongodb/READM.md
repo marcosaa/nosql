@@ -189,7 +189,7 @@ WriteResult({ "nRemoved" : 122 })
            }
 }, { $sort: { age: 1 } } ])
 
-## EXERCICIO 3
+## EXERCICIO 3 – Stockbrokers 
 Importe o arquivo stocks.json do repositório Downloads NoSQL FURB. Esses dados
 são dados reais da bolsa americana de 2015. A importação do arquivo JSON é um
 pouco diferente da execução de um script:
@@ -253,3 +253,20 @@ myCursor.forEach(printjson);
               } 
   }
 ])
+
+## EXERCICIO 3 – Fraude na Enron!
+
+Um dos casos mais emblemáticos de fraude no mundo é o caso da Enron. A
+comunicade do MongoDB utiliza muito esse dataset pois o mesmo se tornou
+público, então vamos importar esse material também:
+
+```mongodb
+mongoimport --db stocks --collection stocks --file enron.json
+```
+
+1. Liste as pessoas que enviaram e-mails (de forma distinta, ou seja, sem
+repetir). Quantas pessoas são?
+>
+
+2. Contabilize quantos e-mails tem a palavra “fraud”
+> db.stocks.find({"sender":{$exists:1},"text": /.*fraud.*/}).count()
