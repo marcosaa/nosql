@@ -108,14 +108,63 @@
 > db.italians.find({}).sort({age : -1}).limit(5)
 
 **13. Crie um italiano que tenha um leão como animal de estimação. Associe um nome e idade ao bichano**
+> db.italians.insert({
+"firstname" : "karina",
+    "surname" : "De Padua",
+    "age" : 20,
+    "email" : "karina@yahoo.com",
+    "bloodType" : "A-",
+    "jobs" : [ 
+        "Veterinaria"
+    ],
+    "favFruits" : [ 
+        "Kiwi"
+    ],
+    "movies" : [ 
+        {
+            "title" : "A menina e o leão"
+        }
+    ],
+    "lion" : {
+        "name" : "Nala",
+        "age" : 15
+    }
+})
+´´´ mongodb
+WriteResult({ "nInserted" : 1 })
+´´´
 
 **14. Infelizmente o Leão comeu o italiano. Remova essa pessoa usando o Id.**
-
+> db.italians.find( { $where: function() { return this.lion != null } },{_id:1} )
+´´´ mongodb
+{"_id" : ObjectId("5ea635561392e7225d23e7b4")}
+´´´
+> db.italians.remove({"_id" : ObjectId("5ea635561392e7225d23e7b4")})
+´´´ mongodb
+WriteResult({ "nRemoved" : 1 })
+´´´
 **15. Passou um ano. Atualize a idade de todos os italianos e dos bichanos em 1.**
+> db.italians.update({},{"$inc" : {"age" : 1,"dog.age" : 1,"cat.age" : 1}},{ multi: true })
+´´´ mongodb
+WriteResult({ "nMatched" : 10000, "nUpserted" : 0, "nModified" : 10000 })
+´´´
 
 **16. O Corona Vírus chegou na Itália e misteriosamente atingiu pessoas somente com gatos e de 66 anos. Remova esses italianos.**
+> db.italians.remove({$and:[{"age": 66},{"cat" : {"$exists" : true}}]})
+´´´ mongodb
+WriteResult({ "nRemoved" : 122 })
+´´´
 
 **17. Utilizando o framework agregate, liste apenas as pessoas com nomes iguais a sua respectiva mãe e que tenha gato ou cachorro.**
+> db.getCollection('italians').aggregate([
+{'$match': { mother: { $exists: 1}, $or: [ { cat: { $exists: 1}, dog: { $exists: 1}}]  }},
+{'$project': {
+"firstname": 1,
+"mother": 1,
+"isEqual": { "$cmp": ["$firstname","$mother.firstname"]}
+}},
+{'$match': {"isEqual": 0}}
+])
 
 **18. Utilizando aggregate framework, faça uma lista de nomes única de nomes. Faça isso usando apenas o primeiro nome**
 
