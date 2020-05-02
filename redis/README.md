@@ -14,4 +14,10 @@ As cartelas são armazenadas em HASH nesse caso, com sets de 15 números aleató
 
 A cartela é pontuada pelo set score. O primeiro jogador que somar 15 pontos, é o vencedor
 
+### Tecnologias envolvidas
 
+ * NodeJs 
+ * Redis
+ * loadash
+ 
+### Evidências
