@@ -21,3 +21,5 @@ A cartela é pontuada pelo set score. O primeiro jogador que somar 15 pontos, é
  * loadash
  
 ### Evidências
+
+https://github.com/marcosaa/nosql/blob/master/redis/evidenciaBingo.png
